@@ -1,4 +1,4 @@
-name: Main deployment of pdf generator lambda function
+name: Main deployment of pattern matching lambda function
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
 
 jobs:
   prod_job:
-    name: Prod deployment of pdf generator lambda function
+    name: Prod deployment of pattern matching lambda function
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -32,8 +32,7 @@ jobs:
           ECR_REPOSITORY: lambda-feedback-prod-pattern-matching
           IMAGE_TAG: latest
         run: |
-          docker buildx build --platform linux/arm64 -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker buildx build --platform linux/arm64 -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG --push .
 
       - name: Update aws custom lambda function code
         env:
