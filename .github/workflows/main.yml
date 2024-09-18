@@ -26,7 +26,7 @@ jobs:
         id: login-pf-aws-ecr
         uses: aws-actions/amazon-ecr-login@v2
       - name: Build and push the tagged docker image to Amazon ECR
-        id: build-custom-image
+        id: build-custom-image 
         env:
           ECR_REGISTRY: ${{ steps.login-pf-aws-ecr.outputs.registry }}
           ECR_REPOSITORY: lambda-feedback-dev-pattern-matching
