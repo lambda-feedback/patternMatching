@@ -29,7 +29,7 @@ jobs:
         id: build-custom-image
         env:
           ECR_REGISTRY: ${{ steps.login-pf-aws-ecr.outputs.registry }}
-          ECR_REPOSITORY: lambda-feedback-dev-common-mistakes
+          ECR_REPOSITORY: lambda-feedback-staging-common-mistakes
           IMAGE_TAG: latest
         run: |
           docker buildx build --platform linux/arm64 -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG --load .
@@ -38,9 +38,9 @@ jobs:
       - name: Update aws custom lambda function code
         env:
           ECR_REGISTRY: ${{ steps.login-pf-aws-ecr.outputs.registry }}
-          ECR_REPOSITORY: lambda-feedback-dev-common-mistakes
+          ECR_REPOSITORY: lambda-feedback-staging-common-mistakes
           IMAGE_TAG: latest
         run: |
           aws lambda update-function-code \
-              --function-name lambda-feedback-dev-common-mistakes \
+              --function-name lambda-feedback-staging-common-mistakes \
               --image-uri $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
