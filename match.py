@@ -31,7 +31,7 @@ def lambda_handler(event, context):
       - message: contains the text 
     '''
     try:
-        inputText = event['commonMistakes']
+        inputText = json.loads(event['body'])['commonMistakes']
         processedText = run_all(inputText)
 
         return {

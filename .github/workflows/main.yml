@@ -29,17 +29,18 @@ jobs:
         id: build-custom-image
         env:
           ECR_REGISTRY: ${{ steps.login-pf-aws-ecr.outputs.registry }}
-          ECR_REPOSITORY: lambda-feedback-prod-pattern-matching
+          ECR_REPOSITORY: lambda-feedback-dev-pattern-matching
           IMAGE_TAG: latest
         run: |
-          docker buildx build --platform linux/arm64 -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG --push .
+          docker buildx build --platform linux/arm64 -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG --load .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
       - name: Update aws custom lambda function code
         env:
           ECR_REGISTRY: ${{ steps.login-pf-aws-ecr.outputs.registry }}
-          ECR_REPOSITORY: lambda-feedback-prod-pattern-matching
+          ECR_REPOSITORY: lambda-feedback-dev-pattern-matching
           IMAGE_TAG: latest
         run: |
           aws lambda update-function-code \
-              --function-name lambda-feedback-prod-pattern-matching \
+              --function-name lambda-feedback-dev-pattern-matching \
               --image-uri $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
